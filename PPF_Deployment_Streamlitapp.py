@@ -48,6 +48,10 @@ if file:
     df['MCP'] = df['MCP'].astype(str).str.replace(',', '')
     df['MCP'] = pd.to_numeric(df['MCP'], errors='coerce')
 
+    # Drop Weighted_MCP if it exists
+    if 'Weighted_MCP' in df.columns:
+        df.drop(columns=['Weighted_MCP'], inplace=True)
+
     # Create required features
     df['Date'] = pd.to_datetime(df['Date'])
     df['Month'] = df['Date'].dt.month
