@@ -29,7 +29,9 @@ if file:
         st.error("Could not find a 'Date' column in the uploaded Excel file.")
         st.stop()
 
-   # Rename columns properly
+   st.write(f"Initial rows in uploaded data: {df.shape[0]}")
+
+    # Clean column names
     df.rename(columns={
         'Purchase Bid (MWh)': 'Purchase_Bid',
         'Sell Bid (MWh)': 'Sell_Bid',
@@ -38,17 +40,18 @@ if file:
         'MCP (Rs/MWh) *': 'MCP'
     }, inplace=True)
 
-    # Confirm renamed columns
-    st.write("Cleaned Column Names:", df.columns.tolist())
-
+    # Clean MCP
     df['MCP'] = df['MCP'].astype(str).str.replace(',', '', regex=False)
     df['MCP'] = pd.to_numeric(df['MCP'], errors='coerce')
 
-    # Drop Weighted_MCP if it exists
+    st.write(f"Rows after MCP cleaning: {df.shape[0]}")
+    st.write(f"MCP nulls: {df['MCP'].isnull().sum()}")
+
+    # Drop Weighted_MCP if exists
     if 'Weighted_MCP' in df.columns:
         df.drop(columns=['Weighted_MCP'], inplace=True)
 
-    # Create required features
+    # Feature Engineering
     df['Date'] = pd.to_datetime(df['Date'])
     df['Month'] = df['Date'].dt.month
     df['Weekday'] = df['Date'].dt.weekday
@@ -62,7 +65,9 @@ if file:
     df['MCP_roll7'] = df['MCP'].rolling(window=7).mean().shift(1)
     df['Purchase_Bid_lag1'] = df['Purchase_Bid'].shift(1)
 
+    st.write(f"Rows before dropna: {df.shape[0]}")
     df.dropna(inplace=True)
+    st.write(f"Rows after dropna: {df.shape[0]}")
 
     # Define features
     features = [
