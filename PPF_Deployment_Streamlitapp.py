@@ -21,9 +21,6 @@ if file:
     df = pd.read_excel(file)
     st.write("### Uploaded Data Preview", df.head())
 
-    st.write("### Column Names in Uploaded File")
-    st.write(df.columns.tolist())
-
     # Check and clean column names
     st.write("### Column Names in Uploaded File")
     st.write(df.columns.tolist())
@@ -42,6 +39,7 @@ if file:
         'Sell Bid (MWh)': 'Sell_Bid',
         'MCV (MWh)': 'MCV',
         'Final Scheduled Volume (MWh)': 'Scheduled_Volume',
+        'MCP (Rs/MWh)': 'MCP',
     }, inplace=True)
 
     # Create required features
