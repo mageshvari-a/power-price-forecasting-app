@@ -23,12 +23,15 @@ if file:
 
     st.write(f"Initial rows in uploaded data: {df.shape[0]}")
     
-    # Try to automatically locate 'Date' column
+    # Detect & clean Date column
     possible_date_cols = [col for col in df.columns if 'date' in col.lower()]
     if possible_date_cols:
+        df[possible_date_cols[0]] = df[possible_date_cols[0]].astype(str).str.strip()
+        df[possible_date_cols[0]].replace(["", "nan", "NaN", "None"], pd.NA, inplace=True)
         df['Date'] = pd.to_datetime(df[possible_date_cols[0]], errors='coerce')
+        df = df.dropna(subset=['Date'])
     else:
-        st.error("Could not find a 'Date' column in the uploaded Excel file.")
+        st.error("Could not find a 'Date' column.")
         st.stop()
 
     # Clean column names
