@@ -65,8 +65,10 @@ if file:
     df['MCP_roll7'] = df['MCP'].rolling(window=7).mean().shift(1)
     df['Purchase_Bid_lag1'] = df['Purchase_Bid'].shift(1)
 
+    st.write("Null count after feature creation:")
+    st.write(df[features].isnull().sum())
     st.write(f"Rows before dropna: {df.shape[0]}")
-    df.dropna(inplace=True)
+    df = df.dropna(subset=features)
     st.write(f"Rows after dropna: {df.shape[0]}")
 
     # Define features
