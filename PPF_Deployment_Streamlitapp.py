@@ -45,6 +45,8 @@ if file:
     # Confirm renamed columns
     st.write("Cleaned Column Names:", df.columns.tolist())
 
+    df['MCP'] = pd.to_numeric(df['MCP'], errors='coerce')
+    
     # Create required features
     df['Date'] = pd.to_datetime(df['Date'])
     df['Month'] = df['Date'].dt.month
