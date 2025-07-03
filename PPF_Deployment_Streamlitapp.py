@@ -24,6 +24,18 @@ if file:
     st.write("### Column Names in Uploaded File")
     st.write(df.columns.tolist())
 
+    # Check and clean column names
+    st.write("### Column Names in Uploaded File")
+    st.write(df.columns.tolist())
+
+    # Try to automatically locate 'Date' column
+    possible_date_cols = [col for col in df.columns if 'date' in col.lower()]
+    if possible_date_cols:
+        df['Date'] = pd.to_datetime(df[possible_date_cols[0]], errors='coerce')
+    else:
+        st.error("Could not find a 'Date' column in the uploaded Excel file.")
+        st.stop()
+
     # Clean column names if needed
     df.rename(columns={
         'Purchase Bid (MWh)': 'Purchase_Bid',
