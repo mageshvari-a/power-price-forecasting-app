@@ -21,6 +21,8 @@ if file:
     df = pd.read_excel(file)
     st.write("### Uploaded Data Preview", df.head())
 
+    st.write(f"Initial rows in uploaded data: {df.shape[0]}")
+    
     # Try to automatically locate 'Date' column
     possible_date_cols = [col for col in df.columns if 'date' in col.lower()]
     if possible_date_cols:
@@ -28,8 +30,6 @@ if file:
     else:
         st.error("Could not find a 'Date' column in the uploaded Excel file.")
         st.stop()
-
-   st.write(f"Initial rows in uploaded data: {df.shape[0]}")
 
     # Clean column names
     df.rename(columns={
