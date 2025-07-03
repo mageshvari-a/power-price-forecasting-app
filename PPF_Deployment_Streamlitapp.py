@@ -39,7 +39,7 @@ if file:
         'Sell Bid (MWh)': 'Sell_Bid',
         'MCV (MWh)': 'MCV',
         'Final Scheduled Volume (MWh)': 'Scheduled_Volume',
-        'MCP (Rs/MWh)': 'MCP',
+        'MCP (Rs/MWh)*': 'MCP',
     }, inplace=True)
 
     # Create required features
