@@ -40,7 +40,8 @@ if file:
         'Sell Bid (MWh)': 'Sell_Bid',
         'MCV (MWh)': 'MCV',
         'Final Scheduled Volume (MWh)': 'Scheduled_Volume',
-        'MCP (Rs/MWh) *': 'MCP'
+        'MCP (Rs/MWh)*': 'MCP',       # In case it comes this way
+        'MCP (Rs/MWh) *': 'MCP',      # In case of trailing space
     }, inplace=True)
 
     # Clean MCP
