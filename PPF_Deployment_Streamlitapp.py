@@ -33,14 +33,17 @@ if file:
         st.error("Could not find a 'Date' column in the uploaded Excel file.")
         st.stop()
 
-    # Clean column names if needed
+   # Rename columns properly
     df.rename(columns={
         'Purchase Bid (MWh)': 'Purchase_Bid',
         'Sell Bid (MWh)': 'Sell_Bid',
         'MCV (MWh)': 'MCV',
         'Final Scheduled Volume (MWh)': 'Scheduled_Volume',
-        'MCP (Rs/MWh)*': 'MCP'
+        'MCP (Rs/MWh) *': 'MCP'
     }, inplace=True)
+
+    # Confirm renamed columns
+    st.write("Cleaned Column Names:", df.columns.tolist())
 
     # Create required features
     df['Date'] = pd.to_datetime(df['Date'])
