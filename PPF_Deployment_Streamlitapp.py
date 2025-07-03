@@ -68,13 +68,23 @@ if file:
     df['MCP_roll7'] = df['MCP'].rolling(window=7).mean().shift(1)
     df['Purchase_Bid_lag1'] = df['Purchase_Bid'].shift(1)
 
-    # Define features
-    features = [
-        'Purchase_Bid', 'Sell_Bid', 'MCV', 'Scheduled_Volume',
-        'Month', 'Weekday', 'Day',
-        'Purchase_Bid_lag1', 'MCP_lag1', 'MCP_lag3', 'MCP_lag7',
-        'MCP_volatility7', 'MCP_roll7', 'Is_Weekend'
-    ]
+    # If < 14 rows, remove lag7-based features
+    if len(df) < 14:
+        features = [
+            'Purchase_Bid', 'Sell_Bid', 'MCV', 'Scheduled_Volume',
+            'Month', 'Weekday', 'Day',
+            'Purchase_Bid_lag1', 'MCP_lag1', 'MCP_lag3', 'Is_Weekend'
+        ]
+    else:
+        features = [
+            'Purchase_Bid', 'Sell_Bid', 'MCV', 'Scheduled_Volume',
+            'Month', 'Weekday', 'Day',
+            'Purchase_Bid_lag1', 'MCP_lag1', 'MCP_lag3', 'MCP_lag7',
+            'MCP_volatility7', 'MCP_roll7', 'Is_Weekend'
+        ]
+
+    if len(df) < 14:
+        st.warning("Input data has less than 14 rows — skipping some lag features to allow predictions.")
 
     st.write("Null count after feature creation:")
     st.write(df[features].isnull().sum())
