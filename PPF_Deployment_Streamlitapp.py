@@ -21,10 +21,6 @@ if file:
     df = pd.read_excel(file)
     st.write("### Uploaded Data Preview", df.head())
 
-    # Check and clean column names
-    st.write("### Column Names in Uploaded File")
-    st.write(df.columns.tolist())
-
     # Try to automatically locate 'Date' column
     possible_date_cols = [col for col in df.columns if 'date' in col.lower()]
     if possible_date_cols:
@@ -45,7 +41,7 @@ if file:
     # Confirm renamed columns
     st.write("Cleaned Column Names:", df.columns.tolist())
 
-    df['MCP'] = df['MCP'].astype(str).str.replace(',', '')
+    df['MCP'] = df['MCP'].astype(str).str.replace(',', '', regex=False)
     df['MCP'] = pd.to_numeric(df['MCP'], errors='coerce')
 
     # Drop Weighted_MCP if it exists
@@ -94,6 +90,8 @@ if file:
     # Predict
     df['Predicted_MCP'] = model.predict(X_scaled)
 
+    st.success("Prediction completed successfully!")
+
     # Show results
     st.write("### Prediction Results", df[['Date', 'MCP', 'Predicted_MCP']])
 
@@ -114,3 +112,11 @@ if file:
     plt.ylabel("Predicted MCP")
     plt.title("Actual vs Predicted MCP")
     st.pyplot(plt.gcf())
+
+    st.download_button(
+    label="Download Predictions as CSV",
+    data=df[['Date', 'MCP', 'Predicted_MCP']].to_csv(index=False),
+    file_name="power_price_predictions.csv",
+    mime="text/csv"
+    )
+
