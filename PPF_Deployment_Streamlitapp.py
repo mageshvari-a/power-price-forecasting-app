@@ -21,6 +21,9 @@ if file:
     df = pd.read_excel(file)
     st.write("### Uploaded Data Preview", df.head())
 
+    st.write("### Column Names in Uploaded File")
+    st.write(df.columns.tolist())
+
     # Clean column names if needed
     df.rename(columns={
         'Purchase Bid (MWh)': 'Purchase_Bid',
