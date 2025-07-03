@@ -76,6 +76,18 @@ if file:
         'MCP_volatility7', 'MCP_roll7', 'Is_Weekend'
     ]
 
+    # Ensure all feature columns are numeric
+    for col in features:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    # Drop any rows with missing feature values after conversion
+    df = df.dropna(subset=features)
+
+    # If nothing left after cleaning, show error and stop
+    if df.empty:
+        st.error("Data after preprocessing is empty. Please check your file format or contents.")
+        st.stop()
+    
     X = df[features]
     X_scaled = scaler.transform(X)
 
